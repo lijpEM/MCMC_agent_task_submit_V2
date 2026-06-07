@@ -1,0 +1,15 @@
+{
+  "agent": "codex-or",
+  "task": "pseudo2d_mt_lab_inversion",
+  "run_id": "mcmc-30min-p1-2-hardened9-gpt-codex-8080-20260606-233200",
+  "model": "gpt-5.5-0424",
+  "best_pass_rate": 0.3333333333333333,
+  "best_round": "auto-3",
+  "total_rounds": 7,
+  "agent_submissions": 1,
+  "auto_submissions": 6,
+  "timed_out": true,
+  "runtime_seconds": 1800.032591342926,
+  "archive_size_bytes": 44736,
+  "best_score": 10.625
+}

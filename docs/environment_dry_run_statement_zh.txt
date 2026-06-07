@@ -1,0 +1,34 @@
+环境空跑说明
+
+环境空跑占比：< 5%
+
+这里的“环境空跑”指 AI 因环境阻塞而无法继续工作的时间，例如等待远程数据下载、等待外部服务响应、等待集群/GPU 队列、等待大型依赖编译，或等待长时间不可交互的仿真任务完成。本任务中这类时间占比很低，远低于 50% 的限制。
+
+本任务主要工作是代码编写、地球物理建模、数据分析、贝叶斯反演实现和结果报告。agent 在工作期间可以持续阅读 starter、实现代码、运行本地脚本、查看输出、修改模型参数化和重新提交评分。任务不依赖外部数据库、在线 API、网页检索或远程计算服务。任务 JSON 中 internet=false，正式 agent 运行也要求离线执行。
+
+本任务的输入数据规模较小。公开数据文件 data/mt_profile_20_public.npz 只包含 20 个海洋 MT 测点、12 个频率、站点水深、TE/TM log10 apparent resistivity、phase、误差和观测 mask。数据读取和预处理是小型 numpy 数组操作，通常为毫秒到秒级。
+
+一维 MT 正演也是本地轻量 CPU 计算。每个测点只需在若干层状介质上计算频率域阻抗响应，公开数据规模为 20 个测点 x 12 个频率。单次正演调用通常为毫秒到亚秒级。任务不要求完整二维或三维 Maxwell 有限元/有限差分正演，因此没有大型网格剖分、长时间数值仿真或 GPU 队列等待。
+
+starter 中的示例脚本和 baseline 脚本可直接本地运行，用于检查数据读取、一维正演和输出格式。通常一次轻量 pipeline 可以在数秒到几十秒内完成，agent 修改代码后可以较快获得反馈。
+
+本任务允许 MCMC、adaptive MCMC、SMC、VI、Laplace/VI hybrid 或等价贝叶斯方法。贝叶斯采样或后验近似可能消耗一定 CPU 时间，但这是 agent 为完成任务主动选择的有效算法计算，不属于环境空跑。agent 可以根据反馈调整采样步数、粒子数、链数和后验诊断策略；这些时间用于产生任务所需的 posterior samples、credible interval 和 posterior predictive 结果。
+
+评分过程也是本地 CPU 评测。scorer/evaluate.py 主要读取 outputs 中的 numpy、json 和 markdown 文件，计算 RMSE、chi2、LAB 深度误差、90% 可信区间 coverage、credible interval width、静态代码特征和报告内容。除 hidden case 外，评分器自身计算很轻量。
+
+hidden 场景评测会本地生成 3 个未公开海洋 MT 场景，并以 subprocess 调用 agent 的 outputs/run_inversion.py。三个 hidden case 分别为 smooth_deepening、local_upwarp 和 thin_conductor，规模为 12 到 24 个测点、8 到 12 个频率。每个 hidden case 的 timeout 为 75 秒，因此 hidden 评测的上限约为 225 秒。这个时间用于检查 agent 代码的泛化能力和后验可信度，属于有效评测计算，不是无意义等待。
+
+从 hardened9 实际 benchmark 运行看，环境没有出现长期阻塞。30 分钟有效 run 的 runtime 为 1800.03 秒，期间完成 1 次 agent 主动提交和 6 次自动评测，final_result best_score=10.625，逐轮 report 可见最高分 11.575。2 小时有效 run 的 runtime 为 7200.03 秒，期间完成 9 次 agent 主动提交和 24 次自动评测，best_score=12.0。两次 run 都持续产生有效 submission 和评分曲线，说明 agent 没有长时间卡在环境等待上。
+
+实际评测报告中，单次 submission 的评分耗时通常为数秒到数分钟。hardened9 2 小时 run 共落盘 33 个 report，30 分钟 run 共落盘 7 个 report；评分时间主要来自 hidden 场景运行 agent 的反演代码，而不是等待外部环境。
+
+本任务不会出现以下主要环境空跑来源：
+
+1. 不需要等待远程数据下载。
+2. 不需要调用外部地球物理服务。
+3. 不需要联网搜索论文或答案。
+4. 不需要 GPU 或集群队列。
+5. 不需要长时间编译大型第三方软件。
+6. 不需要运行完整二维或三维 Maxwell 大规模仿真。
+
+因此，本任务的 AI 工作时间主要花在代码实现、物理建模、贝叶斯采样/近似、结果检查和报告撰写上。不可工作的环境等待时间占比很低，保守估计小于 5%，满足环境空跑不能超过整个任务 50% 的要求。

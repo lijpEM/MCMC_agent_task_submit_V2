@@ -1,0 +1,109 @@
+MCMC pseudo2d_mt_lab_inversion hardened9 提交包文件清单
+
+当前状态：
+当前 `task_submit_ready/` 已更新为 hardened9 提交候选包。30min 与 2h GPT/Codex run 均有服务端登记的有效 agent 自提交，2h 最高正式分数为 12.0，满足“2h 最好不超过 30 分”的难度校准目标。
+
+任务 JSON：
+tasks/pseudo2d_mt_lab_inversion.json
+
+Agent 环境文件：
+environment/Dockerfile
+environment/requirements.txt
+environment/task_files/README.md
+environment/task_files/docs/task_spec.md
+environment/task_files/docs/references/
+environment/task_files/data/mt_profile_20_public.npz
+environment/task_files/data/serpent_mt/SERPENT_fullMTdataSet.txt
+environment/task_files/data/serpent_mt/maxrho_1300C_MPT.txt
+environment/task_files/starter/
+
+Judge 文件：
+environment/judge_files/evaluate.py
+scorer/evaluate.py
+scorer/score.sh
+
+文档：
+README.md
+docs/task_spec.md
+docs/scoring_standard_geophysics_zh.txt
+docs/calibration_summary_zh.txt
+docs/task_authenticity_statement_zh.txt
+docs/workload_time_statement_zh.txt
+docs/human_reference_result_zh.txt
+docs/contamination_prevention_statement_zh.txt
+docs/environment_dry_run_statement_zh.txt
+docs/baseline_results_zh.txt
+docs/baseline/starter_baseline_run_20260605.log
+docs/baseline/starter_baseline_eval_20260605.txt
+
+Hardened9 运行证据：
+docs/hardened9_results/SUMMARY.md
+docs/hardened9_results/score_trajectory.csv
+docs/hardened9_results/score_trajectory.svg
+docs/hardened9_results/30min_final_result.json
+docs/hardened9_results/30min_run_history.json
+docs/hardened9_results/30min_agent1_report.json
+docs/hardened9_results/30min_auto5_report_timeout_late.json
+docs/hardened9_results/2h_final_result.json
+docs/hardened9_results/2h_run_history.json
+docs/hardened9_results/2h_agent9_report.json
+
+评分器版本：
+SHA256 = b5ca7146c7681d11ac59da1a44ee74759d1c126da6883e994fa9b2bfb819d4b2
+
+四份 evaluate.py 已同步：
+- judge_files/evaluate.py
+- judge_files/evaluate_scorer_copy.py
+- task_submit_ready/scorer/evaluate.py
+- task_submit_ready/environment/judge_files/evaluate.py
+
+最终 hardened9 校准 run 证据：
+
+30min run:
+/home/SE-bench-v0.2.2/logs/runs/mcmc-30min-p1-2-hardened9-gpt-codex-8080-20260606-233200/pseudo2d_mt_lab_inversion
+- best_score = 10.625
+- best_pass_rate = 0.3333333333333333
+- best_round = auto-3
+- total_rounds = 7
+- agent_submissions = 1
+- auto_submissions = 6
+- timed_out = true
+- runtime_seconds = 1800.032591342926
+- archive_size_bytes = 44736
+- agent-1 score = 10.625
+- agent-1 pass_rate = 0.3333333333333333
+- agent-1 valid = true
+
+30min 补充说明：
+- official final_result / run_history 记录 best_round=auto-3、best_score=10.625。
+- timeout 收尾后磁盘逐轮 report 中 auto-5/report.json 可见 score=11.575、pass_rate=0.5、valid=true。
+- 不手动改写历史结果；正式 benchmark 口径使用 final_result.json，同时在 SUMMARY.md 保留该差异说明。
+
+2h run:
+/home/SE-bench-v0.2.2/logs/runs/mcmc-2h-p1-2-hardened9-gpt-codex-8080-20260607-000213/pseudo2d_mt_lab_inversion
+- best_score = 12.0
+- best_pass_rate = 0.6666666666666666
+- best_round = auto-1
+- total_rounds = 33
+- agent_submissions = 9
+- auto_submissions = 24
+- timed_out = true
+- runtime_seconds = 7200.027633428574
+- archive_size_bytes = 264193
+- agent-1 through agent-9 all service-side valid and scored
+- best agent score = 12.0
+
+当前校准结论：
+- 30min official best_score = 10.625
+- 30min highest visible per-report score = 11.575
+- 2h official best_score = 12.0
+- 2h highest visible per-report score = 12.0
+- 2h best score 12.0 < 30，满足难度目标。
+
+Hardened9 完整归档包：
+/home/workspace/mcmc_agent_qc0605/archive_mcmc_hardened9_20260607.tar.gz
+
+提交前清理要求：
+- 不包含 __pycache__/ 和 *.pyc。
+- 不包含任何明文凭据或访问令牌。
+- 保持 scorer/evaluate.py 与 environment/judge_files/evaluate.py 同 SHA。

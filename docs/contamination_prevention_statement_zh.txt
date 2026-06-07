@@ -1,0 +1,14 @@
+污染防控说明
+
+本任务从设计上避免 agent 直接搬运现有代码或读取答案获得高分。
+
+1. agent 可见目录只包含公开 20 站 MT profile、参考资料、starter scaffold 和任务说明，不包含 hidden 场景真值或最终答案文件。
+2. task JSON 设置 `internet=false`，正式运行不依赖外部网络。agent 不能在线检索现成答案或调用外部服务。
+3. hidden eval 场景由评分器本地生成，包含 smooth_deepening、local_upwarp、thin_conductor 等公开数据未直接给出的结构变化。hidden 输入会剥离 `case_id` 和真值字段，避免答案泄露。
+4. 评分器会重新执行 agent 的 `outputs/run_inversion.py`，而不是只相信公开 outputs 中已经生成的结果。hidden rerun 会复制 helper 模块并使用 CLI/env 输入输出路径检查泛化能力。
+5. 评分器检查静态代码和输出文件，限制硬编码公开站名、固定数组形状、固定 LAB 曲线、公开预测 posthoc correction、hidden/public 推理链不一致等行为。
+6. posterior sample 不能只靠 `summary.json` 虚报 ESS/Rhat。评分器会读取 `posterior_samples.npy` 自行估算样本数量、活跃参数、split-Rhat、ESS、重复样本和链顺序可信度。
+7. MAP/Laplace-only、fast pipeline、样本重复、样本顺序破坏、credible interval 过窄/过宽、hidden undercoverage 等行为都会触发结构惩罚或结果质量上限。
+8. 公开数据和 hidden 数据有相同任务机制但不同具体剖面结构，降低 dev set 过拟合直接转化为 eval 高分的风险。
+
+因此，高分需要 agent 实现可重跑的地球物理-贝叶斯反演流程，而不是复制公开资料、打印分数、硬编码公开样例或伪造诊断。

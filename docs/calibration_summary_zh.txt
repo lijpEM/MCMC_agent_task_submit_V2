@@ -1,0 +1,105 @@
+伪二维海洋 MT 贝叶斯 LAB 反演 hardened9 校准摘要
+
+评分方向：maximize。难度校准使用最高有效分，而不是最低分。本任务目标是让 agent 通过长程迭代逐步提升，但 2h 最好成绩最好不超过 30 分，以保留 12h+ 长程工作空间。
+
+一、评分器修复目标
+
+hardened9 评分器承接 P1-2 质检指出的问题，并修复前序 hardened8 暴露的样本顺序/诊断漏洞。核心要求：
+
+1. structural penalty 只惩罚机制层面的结构性失败。hidden 质量失败不能直接把结构乘数压死；无结构失败时 penalty 可达到 1.0。
+2. `map_laplace_only` 需要真实缺失采样证据，不能仅因 covariance、Hessian、optimizer、Laplace 初始化等词误判真实 MCMC/SMC/VI。
+3. hidden rerun 必须执行 agent 提交的实现，并复制 helper 模块/目录，支持 CLI/env 输入输出路径。
+4. hidden 输入剥离真值字段，防止 ground truth 泄露。
+5. 对 hidden/public 推理链不一致、posthoc correction、过宽/过窄 credible interval、伪造 ESS/Rhat、样本重复或样本顺序破坏进行限分或结构惩罚。
+6. 分项 C/D/E 使用连续口径；hidden 结果质量不足通过 correctness cap 控制高分，而不是靠结构乘数封顶。
+
+当前评分器 SHA256：
+
+b5ca7146c7681d11ac59da1a44ee74759d1c126da6883e994fa9b2bfb819d4b2
+
+四份 evaluator 已同步：
+
+- judge_files/evaluate.py
+- judge_files/evaluate_scorer_copy.py
+- task_submit_ready/scorer/evaluate.py
+- task_submit_ready/environment/judge_files/evaluate.py
+
+二、hardened9 GPT/Codex 30min run
+
+run_id = mcmc-30min-p1-2-hardened9-gpt-codex-8080-20260606-233200
+目录 = /home/SE-bench-v0.2.2/logs/runs/mcmc-30min-p1-2-hardened9-gpt-codex-8080-20260606-233200/pseudo2d_mt_lab_inversion
+
+final_result.json：
+- best_score = 10.625
+- best_pass_rate = 0.3333333333333333
+- best_round = auto-3
+- total_rounds = 7
+- agent_submissions = 1
+- auto_submissions = 6
+- timed_out = true
+- runtime_seconds = 1800.032591342926
+- archive_size_bytes = 44736
+
+agent 自提交：
+- agent-1 score = 10.625
+- agent-1 pass_rate = 0.3333333333333333
+- agent-1 valid = true
+
+30min 逐轮 report 中 auto-5 可见 score=11.575、pass_rate=0.5、valid=true，但官方 final_result/run_history 在 timeout 时保留 best_round=auto-3、best_score=10.625。提交材料中同时保留这两类记录，不手动改写历史结果；正式 benchmark 口径以 final_result.json 为准。
+
+三、hardened9 GPT/Codex 2h run
+
+run_id = mcmc-2h-p1-2-hardened9-gpt-codex-8080-20260607-000213
+目录 = /home/SE-bench-v0.2.2/logs/runs/mcmc-2h-p1-2-hardened9-gpt-codex-8080-20260607-000213/pseudo2d_mt_lab_inversion
+
+final_result.json：
+- best_score = 12.0
+- best_pass_rate = 0.6666666666666666
+- best_round = auto-1
+- total_rounds = 33
+- agent_submissions = 9
+- auto_submissions = 24
+- timed_out = true
+- runtime_seconds = 7200.027633428574
+- archive_size_bytes = 264193
+
+agent 自提交：
+- agent-1: score=11.125, pass_rate=0.5, valid=true
+- agent-2: score=12.0, pass_rate=0.5, valid=true
+- agent-3: score=12.0, pass_rate=0.5, valid=true
+- agent-4: score=12.0, pass_rate=0.5, valid=true
+- agent-5: score=12.0, pass_rate=0.5, valid=true
+- agent-6: score=12.0, pass_rate=0.5, valid=true
+- agent-7: score=11.5, pass_rate=0.5, valid=true
+- agent-8: score=12.0, pass_rate=0.5, valid=true
+- agent-9: score=12.0, pass_rate=0.5, valid=true
+
+2h 行为说明：agent 在中段尝试 posthoc prediction correction，agent-7 降到 11.5 并触发 `posthoc_prediction_correction`；随后回滚，agent-8 和 agent-9 恢复到 12.0。
+
+四、校准结论
+
+- 30min official best_score = 10.625。
+- 30min highest visible per-report score = 11.575。
+- 2h official best_score = 12.0。
+- 2h highest visible per-report score = 12.0。
+- 2h 最高正式分数 12.0 < 30，满足难度目标。
+- 两个 run 都有服务端登记的有效 agent 自提交，满足归档要求。
+
+五、归档文件
+
+提交包内：
+
+- docs/hardened9_results/SUMMARY.md
+- docs/hardened9_results/score_trajectory.csv
+- docs/hardened9_results/score_trajectory.svg
+- docs/hardened9_results/30min_final_result.json
+- docs/hardened9_results/30min_run_history.json
+- docs/hardened9_results/30min_agent1_report.json
+- docs/hardened9_results/30min_auto5_report_timeout_late.json
+- docs/hardened9_results/2h_final_result.json
+- docs/hardened9_results/2h_run_history.json
+- docs/hardened9_results/2h_agent9_report.json
+
+工作区完整归档包：
+
+/home/workspace/mcmc_agent_qc0605/archive_mcmc_hardened9_20260607.tar.gz

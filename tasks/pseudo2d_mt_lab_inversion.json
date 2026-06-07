@@ -1,0 +1,45 @@
+{
+  "task_id": "pseudo2d_mt_lab_inversion",
+  "name": "拟二维海洋 MT 贝叶斯 LAB 反演",
+  "base_image": "sebench.base.pseudo2d_mt_lab",
+  "platform": "linux/amd64",
+  "cwd": "/home/workspace/pseudo2d_mt_lab",
+  "submit_paths": [
+    "outputs/"
+  ],
+  "submit_exclude": [
+    "tests/",
+    "__pycache__/",
+    "*.pyc",
+    ".ipynb_checkpoints/",
+    "starter/serpent_python_port/Trash/"
+  ],
+  "internet": false,
+  "status": "ready",
+  "source": "SERPENT marine MT profile materials, Blatter et al. 2019/2022, Manassero et al. 2020 reduced-order probabilistic MT inversion",
+  "work": {
+    "setup_cmds": [
+      "mkdir -p /home/workspace/pseudo2d_mt_lab/outputs",
+      "cp -r /opt/mcmc_task_files/docs /home/workspace/pseudo2d_mt_lab/",
+      "cp -r /opt/mcmc_task_files/data /home/workspace/pseudo2d_mt_lab/",
+      "cp -r /opt/mcmc_task_files/starter /home/workspace/pseudo2d_mt_lab/",
+      "cp /opt/mcmc_task_files/README.md /home/workspace/pseudo2d_mt_lab/README.md",
+      "chmod -R 555 /home/workspace/pseudo2d_mt_lab/docs /home/workspace/pseudo2d_mt_lab/data",
+      "chmod -R 555 /home/workspace/pseudo2d_mt_lab/starter"
+    ],
+    "specs_dir": "/home/workspace/pseudo2d_mt_lab/docs",
+    "agent_query": "任务目标：实现一个拟二维海洋 MT 贝叶斯 LAB 反演。详细说明见 `docs/task_spec.md`，starter 说明见 `starter/README.md`。\n\n你需要读取 `data/mt_profile_20_public.npz` 中 20 个海洋 MT 测点、12 个频率、站点水深、TE/TM log10 apparent resistivity、phase 和误差；使用站点水深构造海水层；用 1D 层状介质 MT 正演作为每个测点的物理算子；通过 spline、basis、control points、GP/PCA 或其他低维横向参数化把所有测点耦合成拟二维 LAB/低阻层模型。\n\n必须定义 prior、likelihood 和 posterior。至少使用 TM 模式的 `log10(rhoa)` 与 phase，likelihood 应用观测误差归一化。可以使用 MCMC、adaptive MCMC、SMC、VI、Laplace/VI hybrid 或等价贝叶斯方法。不要实现完整 2D/3D MT 有限元/有限差分正演；不要把 20 个测点独立反演后拼接；不要只做 MAP 后人为加固定误差带；不要硬编码公开站名、数组形状、响应或固定 LAB 曲线。\n\n交付到 `outputs/`：`run_inversion.py`、`pseudo2d_model.py`、`posterior_samples.npy`、`model_posterior_profile.npz`、`data_pred_mean.npz`、`summary.json`、`report.md`。建议同时输出剖面、拟合和诊断图。容器无网络，依赖已预装。"
+  },
+  "judge": {
+    "setup_cmds": [
+      "mkdir -p /opt/evaluator",
+      "cp /opt/mcmc_judge_files/evaluate.py /opt/evaluator/evaluate.py",
+      "chmod -R 555 /opt/evaluator"
+    ],
+    "eval_cmd": "cd /home/workspace/pseudo2d_mt_lab && PYTHONPATH=/opt/evaluator python /opt/evaluator/evaluate.py /home/workspace/pseudo2d_mt_lab/outputs/",
+    "eval_timeout": 21600,
+    "parser": "structured_json",
+    "score_direction": "maximize",
+    "selection": "valid_then_score"
+  }
+}

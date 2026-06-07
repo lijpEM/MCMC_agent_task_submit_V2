@@ -1,0 +1,17 @@
+真实成果与人类标准说明
+
+本题的人类标准不是泄露给 agent 的标准答案文件，而是一个领域专家应当完成的研究成果形态：一个可重跑的拟二维海洋 MT 贝叶斯 LAB 反演流程，能够在公开剖面和隐藏剖面上输出物理合理的 LAB 深度、低阻层厚度/电阻率、后验样本、posterior predictive 拟合和可信区间。
+
+理想人类成果应具备以下特征：
+
+1. 正确读取公开 MT profile 数据，使用站点水深构造海水层，正确处理 TM log10 apparent resistivity 和 phase，必要时解释 TE 的使用或省略。
+2. 使用真实的一维层状介质 MT 正演作为每个测点的物理算子。
+3. 通过低维横向参数化耦合所有测点，避免每站独立反演后拼接。
+4. 明确定义 prior、likelihood 和 posterior，并输出真实变化的 posterior samples，而不是重复 MAP 或人为固定误差带。
+5. `model_posterior_profile.npz` 给出 LAB/导体剖面的均值、分位数和可信区间，满足基本物理约束。
+6. `data_pred_mean.npz` 给出公开数据的 posterior predictive 拟合，chi2/RMSE 与观测误差量级相符。
+7. `summary.json` 给出采样或近似推断诊断，如样本数、burn-in、acceptance、ESS、Rhat、runtime、prior 和 forward description。
+8. `report.md` 用定量指标解释模型、拟合、不确定性和局限。
+9. hidden rerun 能在不同站点数、频率数和 LAB/导体结构下运行，不依赖公开站名、数组形状或固定 LAB 曲线。
+
+当前 starter baseline 只作为格式和低分参考，不代表人类标准。它能运行并输出文件，但仍是 MAP/高斯近似流程，hidden 泛化和 posterior 真实性不足，hardened scorer 下得分为 11.9。人类高质量成果应显著超过 starter baseline，并在 hidden LAB recovery 和 uncertainty calibration 上取得稳定表现。

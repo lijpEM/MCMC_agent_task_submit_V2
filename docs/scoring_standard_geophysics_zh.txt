@@ -1,0 +1,219 @@
+拟二维海洋 MT 贝叶斯 LAB 反演任务评分标准
+
+一、评价目标
+
+本评分标准用于判断 agent 是否真正完成了拟二维海洋大地电磁贝叶斯 LAB 反演任务，而不是只生成一组可以运行的脚本或一个确定性拟合结果。
+
+本任务的科学目标是：利用一条海洋 MT 剖面上的多测点频率响应，在不构建完整二维或三维 Maxwell 正演求解器的前提下，建立一个低维横向耦合的拟二维模型，反演岩石圈-软流圈边界 LAB 及其下方低阻层结构，并给出可信的后验不确定性。
+
+一个合格解法应当同时满足地球物理和贝叶斯统计两方面要求。地球物理方面，模型应使用站点水深构造海水层，正确处理 TM 视电阻率和相位，使用一维层状介质 MT 正演作为每个站点的物理算子，并通过控制点、样条、基函数、GP、PCA 或类似低维参数化把各站点耦合为连续的剖面模型。贝叶斯方面，解法应明确 prior、likelihood 和 posterior，输出真实变化的 posterior samples、LAB 深度可信区间、数据预测和采样诊断，而不是只在一个 MAP 解周围人为添加固定误差带。
+
+本任务刻意不要求完整二维或三维 MT 有限元/有限差分正演。它考察的是科研型工程判断：如何在计算量受限的情况下，把海洋 MT 数据、LAB 地质解释、低维模型表达和后验不确定性结合起来。
+
+
+二、总分结构
+
+总分为 100 分，分为六个组件：
+
+A. 可运行性与交付物完整性，8 分。
+B. MT 数据处理与一维正演，14 分。
+C. 拟二维 LAB 贝叶斯建模，35 分。
+D. LAB 结果质量与后验校准，25 分。
+E. 泛化、稳健性与反硬编码，10 分。
+F. 报告与地球物理解释，8 分。
+
+先计算原始总分：
+
+raw_total = A + B + C + D + E + F
+
+再根据结构性缺陷计算最终分数：
+
+final_score = raw_total * structural_penalty
+
+structural_penalty 用于惩罚那些看似输出完整、但核心地球物理或贝叶斯机制没有真正成立的提交。
+
+
+三、A 可运行性与交付物完整性，8 分
+
+A 评价 outputs 目录是否包含任务要求的基本产物，以及这些产物是否能被评分器读取。
+
+必须交付的文件包括 run_inversion.py、pseudo2d_model.py、posterior_samples.npy、model_posterior_profile.npz、data_pred_mean.npz、summary.json 和 report.md。缺失文件会直接扣分。
+
+评分器会读取 summary.json、posterior_samples.npy、model_posterior_profile.npz 和 data_pred_mean.npz，检查数组是否可解析、数值是否有限、形状是否基本一致。若 posterior samples 或剖面后验文件无法读取，则说明反演流程没有形成可检验的贝叶斯输出。
+
+A 只说明交付物是否完整、格式是否有效。A 高分不代表反演结果正确，也不代表 posterior 可信。
+
+
+四、B MT 数据处理与一维正演，14 分
+
+B 评价 agent 是否正确处理公开海洋 MT 数据，并使用合理的一维 MT 正演。
+
+首先检查 data_pred_mean.npz 是否包含观测和预测的 log10 apparent resistivity 与 phase。公开数据中的视电阻率已经是 log10(ohm m)，如果 agent 把它当作线性电阻率再次取对数，或忽略 log10 单位，会造成物理量级错误。
+
+其次检查预测与观测的拟合误差。log10 视电阻率 RMSE 较小、相位 RMSE 较小，并且 summary.json 中 chi2_per_dof 接近噪声水平时，可以获得较高分。若 chi2_per_dof 明显大于 3，说明公开数据没有被合理解释；若拟合极好但后验和 hidden 表现很差，则可能存在过拟合或后验构造不可信。
+
+第三，检查代码是否体现一维层状介质 MT 正演。合理解法应包含阻抗递推、频率响应、层厚、层电阻率、海水层等核心概念。只用经验曲线或多项式直接拟合响应，不应获得高分。
+
+第四，检查是否使用站点水深。海洋 MT 中水深决定海水层厚度，对海底阻抗有重要影响。忽略水深会降低地球物理可信度，并触发跨组件上限。
+
+B 的核心是确认 agent 确实在处理 MT 物理数据，而不是绕过正演问题做纯数值拟合。
+
+
+五、C 拟二维 LAB 贝叶斯建模，35 分
+
+C 是本任务最高权重部分，用于评价 agent 是否建立了真正的拟二维贝叶斯 LAB 反演模型。
+
+C1 评价概率模型完整性。高分解法应明确 prior、likelihood 和 posterior。prior 应约束 LAB 深度、低阻层厚度、电阻率范围和平滑性；likelihood 应使用观测误差归一化的 TM log10 视电阻率和相位残差；posterior 应是 prior 与 likelihood 的组合。只写出 objective function 而没有概率解释，不能获得高分。
+
+C2 评价横向耦合的低维参数化。合理行为是使用控制点、样条、基函数、GP、PCA 或类似参数化描述沿剖面的 LAB 深度、低阻层厚度和电阻率变化。所有站点应共享同一组低维参数，形成横向连续的拟二维结构。若对每个站点分别做一维反演再拼接，属于站点独立拼接，不符合任务要求，C 会被严格限制。
+
+C3 评价后验真实性。posterior_samples.npy 应包含足够数量的样本，多个参数应真实变化，样本应为有限数值。MCMC、adaptive MCMC、SMC、VI 或有实际采样/变分含义的 hybrid 都可以接受。评分器不仅读取 summary.json 中的 ESS/Rhat/acceptance 等诊断，也会从 posterior_samples.npy 自行估算样本数量、活跃参数、split-Rhat 和简化 ESS，防止只靠虚报 summary 诊断获得真实采样保护。若样本只是重复一个 MAP 模型，或者是 MAP/Laplace 解周围人为加噪声，得分会被限制。若 runtime 极短且方法痕迹显示只是优化加 Laplace，则会触发 fast_pipeline_no_sampling 或 map_laplace_only。
+
+C4 评价 reduced-order 或 adaptive 思路。由于完整二维/三维 MT 反演计算量过大，本题鼓励使用低维模型、代理模型、控制点表达或自适应采样策略。合理的 reduced-order 设计能提高 C 分。
+
+C5 评价不确定性表达。model_posterior_profile.npz 应包含 LAB 深度的 p05、p50、p95 或等价可信区间，且可信区间顺序正确、宽度合理。可信区间过窄、固定不变或完全缺失，说明没有形成可信 posterior uncertainty。
+
+C6 评价稳定性。代码应能稳定生成剖面后验，关键数组应有限，可信区间不应交叉，LAB 应在海底以下。
+
+从地球物理角度，C 的重点不是逐点恢复唯一模型。MT 反演本身非唯一，LAB 深度、低阻层厚度和电阻率之间存在 trade-off。因此 C 更关注模型族是否合理、横向耦合是否成立、后验样本是否真实、可信区间是否能表达非唯一性。
+
+
+六、D LAB 结果质量与后验校准，25 分
+
+D 评价公开剖面和 hidden 场景中的 LAB 反演结果是否具有地球物理可信度。
+
+公开剖面部分首先检查数据拟合，包括 log10 视电阻率 RMSE、相位 RMSE 和 chi2_per_dof。拟合应接近观测误差水平，不能明显欠拟合，也不能只通过后处理修正预测。
+
+其次检查剖面几何是否合理。LAB 深度应位于海底以下，深度范围应符合海洋岩石圈-软流圈边界的合理量级；低阻层底界应深于 LAB，或低阻层厚度应为正。若低阻层厚度为负、底界穿越 LAB 或 LAB 出现在海水层内，属于地球物理结构错误。
+
+hidden 场景部分是 D 的关键。评分器会在未公开的合成/扰动剖面上运行 agent 的实现，比较恢复的 LAB 深度与 hidden 真值之间的 RMSE，检查 90% 可信区间 coverage，检查可信区间宽度是否合理，并评估数据预测误差。
+
+高分行为是：hidden LAB 深度 RMSE 较低，coverage 接近 90%，可信区间既不过窄也不过宽，且数据拟合仍接近噪声水平。若 hidden LAB recovery 弱，说明公开数据上的效果可能依赖调参或硬编码；若 posterior undercoverage，说明可信区间过于自信，不能代表真实地质不确定性。
+
+D 的意义是防止 agent 只在公开 20 个测点上调出漂亮曲线，而不能在相似但未公开的海洋 MT 剖面中恢复 LAB。
+
+
+七、E 泛化、稳健性与反硬编码，10 分
+
+E 评价代码是否能离开公开样例后继续工作。
+
+首先看 hidden case 是否成功运行。若 hidden case 全部失败，说明实现依赖公开数据形状、站名、频率数或固定 LAB 曲线，不具备泛化能力。
+
+其次看代码是否硬编码公开站点名、公开数组形状、公开响应或固定剖面。如果发现硬编码，E 会扣分，并可能触发结构惩罚。
+
+第三，看实现是否避免站点独立拼接。真正的拟二维反演应通过共享低维参数耦合所有站点；独立反演再拼接不能表达横向先验，也不能合理传播不确定性。
+
+第四，看 hidden 场景中是否仍保持 posterior sampling 或 VI 的行为。如果公开场景声称 MCMC，但 hidden 场景退化为 MAP/Laplace 或快速确定性流程，E 会降低。
+
+E 不重复 C 的模型理论评分，也不重复 D 的数值结果评分。E 的功能是检查泛化、稳健性和反投机行为。
+
+
+八、F 报告与地球物理解释，8 分
+
+F 评价 report.md 是否能以地球物理学者可以理解的方式解释方法、结果和局限。
+
+合格报告应说明海洋 MT、LAB、低阻层、视电阻率、相位、水深、海水层、拟二维横向耦合、prior、likelihood、posterior 和 uncertainty。报告应给出定量结果，例如 RMSE、chi2、credible interval width、coverage 或采样诊断。
+
+报告还应解释为什么采用拟二维低维模型而不是完整二维/三维正演，说明一维站点正演的适用边界，以及 TE/TM 处理选择。如果只使用 TM，应说明 TE 被忽略的理由，例如 TE/TM splitting 可能包含二维海底地形、海岸线或构造走向效应，而当前 reduced-order 1D 物理无法完全解释。
+
+报告必须包含局限性。合理局限包括：一维正演不能表达横向电流通道效应，海底地形和各向异性未完全建模，LAB 深度与低阻层电导存在 trade-off，credible interval 是在当前模型族条件下的后验不确定性，不等同于完整地质模型空间的不确定性。
+
+F 分不应替代数值评分。写得好的报告不能弥补 hidden 场景失败；但报告能判断 agent 是否真正理解这道地球物理反演任务。
+
+
+九、结构惩罚因子
+
+最终分数使用结构惩罚因子：
+
+final_score = raw_total * structural_penalty
+
+惩罚因子分为四种实际情况。
+
+如果同时出现 map_laplace_only 和 fast_pipeline_no_sampling，penalty = 0.25。这表示提交主要是快速确定性优化或 MAP/Laplace 近似，缺少真实后验探索。它可以获得基础运行分，但不能获得高 benchmark 分。
+
+如果没有结构性失败，penalty = 1.00。这表示提交在正演、横向耦合、posterior、hidden 泛化和报告方面没有明显机制缺陷，最终分数由 A-F 原始总分决定。
+
+如果存在结构性失败，但 C、D、F 已达到成熟证据阈值，penalty = 0.50。成熟证据要求 C >= 19.5、D >= 12.0、F >= 5.5。这个档位承认提交已经有实质地球物理和贝叶斯成果，但仍因机制缺陷不能进入高分区。
+
+如果存在结构性失败且成熟证据不足，penalty = 0.34。这用于限制那些能跑通一部分流程、但核心机制仍不充分的提交。
+
+结构性失败只用于机制层面的无效行为，包括：只做 MAP 或最小二乘且没有真实采样证据；站点独立反演后拼接；posterior samples 缺失、重复或过短；没有真实一维 MT 正演；未使用水深；硬编码公开站点；公开预测使用事后修正等。
+
+hidden LAB recovery 弱、hidden posterior coverage 不足、credible interval 过窄或过宽、hidden case 未全部跑通等属于结果质量或泛化质量问题。它们会通过 C/D/E 组件上限、global caps 和 final correctness ceiling 限制最终分数，但不直接作为 structural_penalty 触发项。这样可以避免“hidden case 跑通后暴露更多诊断，反而把结构乘数从 0.34 降到 0.25”的反向激励。
+
+
+十、为什么需要结构惩罚
+
+在地球物理反演中，某些错误不是局部小错误，而会影响整个结论的可信度。
+
+例如，只做 MAP 解再添加固定误差带，不能说明 LAB 后验不确定性。每个站点单独反演后拼接，不能形成横向连续的拟二维先验。忽略水深会破坏海洋 MT 的物理边界条件。hidden 场景 coverage 很低，说明可信区间过于自信，不适合作为贝叶斯反演结果。硬编码公开数据形状则说明方法不可迁移。
+
+这些问题会污染 A-F 多个组件中的结果，因此使用全局惩罚因子比只在单项中扣分更合理。
+
+
+十一、当前 hardened9 校准结果
+
+当前提交包使用 hardened9 评分器和 GPT/Codex agent 在 8080 judge route 完成 30min 与 2h 实跑。
+
+30min run：
+
+run_id = mcmc-30min-p1-2-hardened9-gpt-codex-8080-20260606-233200
+final_result best_score = 10.625
+best_pass_rate = 0.3333333333333333
+best_round = auto-3
+total_rounds = 7
+agent_submissions = 1
+auto_submissions = 6
+timed_out = true
+runtime_seconds = 1800.032591342926
+agent-1 score = 10.625, pass_rate = 0.3333333333333333, valid = true
+
+30min 的逐轮 report 中 auto-5 可见 score=11.575、pass_rate=0.5、valid=true；这是 timeout 收尾时的汇总差异。正式 benchmark 口径使用 final_result.json，同时在 hardened9_results/SUMMARY.md 中保留该差异。
+
+2h run：
+
+run_id = mcmc-2h-p1-2-hardened9-gpt-codex-8080-20260607-000213
+final_result best_score = 12.0
+best_pass_rate = 0.6666666666666666
+best_round = auto-1
+total_rounds = 33
+agent_submissions = 9
+auto_submissions = 24
+timed_out = true
+runtime_seconds = 7200.027633428574
+agent-1 through agent-9 all service-side valid and scored
+best agent score = 12.0
+
+2h agent 在中段尝试 posthoc prediction correction，agent-7 降到 11.5 并触发 posthoc_prediction_correction；随后 agent-8 和 agent-9 回到 12.0。主要剩余失败项集中在 fast_pipeline_no_sampling、map_laplace_only、posterior_undercoverage_hidden 和 weak_hidden_lab_recovery。
+
+当前校准满足 benchmark 设计目标：
+
+30min official best_score = 10.625。
+30min highest visible per-report score = 11.575。
+2h official best_score = 12.0。
+2h highest visible per-report score = 12.0。
+2h 最高正式分数低于 30。
+两个 run 都有服务端登记的有效 agent 自提交。
+
+分数轨迹、final_result、run_history 和代表性 report 已保存在：
+
+- docs/hardened9_results/SUMMARY.md
+- docs/hardened9_results/score_trajectory.csv
+- docs/hardened9_results/score_trajectory.svg
+- docs/hardened9_results/30min_final_result.json
+- docs/hardened9_results/30min_run_history.json
+- docs/hardened9_results/30min_agent1_report.json
+- docs/hardened9_results/30min_auto5_report_timeout_late.json
+- docs/hardened9_results/2h_final_result.json
+- docs/hardened9_results/2h_run_history.json
+- docs/hardened9_results/2h_agent9_report.json
+
+十二、总体评价
+
+从地球物理学者视角看，本评分标准是合理的。
+
+它没有把任务简化为公开数据曲线拟合，也没有要求不现实的完整二维/三维 Maxwell 反演。它强调 reduced-order pseudo-2D 建模、海洋 MT 正演物理、LAB 地质解释、后验不确定性和 hidden 泛化能力。
+
+C 作为最大项，保证题目核心是贝叶斯 LAB 反演能力。D 保证结果具有地球物理意义。E 防止硬编码和公开数据投机。F 要求 agent 用科学语言解释方法、结果和局限。结构惩罚因子则保证 MAP/Laplace、站点拼接、posterior undercoverage 和 hidden 失败不会被表面完整的输出掩盖。
+
+因此，该评分标准适合作为拟二维海洋 MT 贝叶斯 LAB 反演任务的 hardened9 提交版本。

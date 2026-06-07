@@ -1,0 +1,21 @@
+Wrote starter outputs to /tmp/mcmc_baseline_outputs
+{
+  "method": "starter_map_plus_gaussian_approximation",
+  "mode_used": "TM",
+  "n_stations": 20,
+  "n_freqs": 12,
+  "n_parameters": 7,
+  "n_samples": 300,
+  "burn_in": 0,
+  "acceptance_rate": 0.0,
+  "ess_min": null,
+  "rhat_max": null,
+  "chi2_per_dof": 707.2773337985107,
+  "rmse_log10_rhoa": 1.5861489791176169,
+  "rmse_phase_deg": 22.444214764627706,
+  "runtime_seconds": 0.7842705249786377,
+  "prior_description": "bounded starter parameters; not a full Bayesian prior",
+  "forward_description": "laterally coupled 1D MT forward with three LAB controls",
+  "optimizer_success": false,
+  "starter_hidden_smoke_mode": false
+}

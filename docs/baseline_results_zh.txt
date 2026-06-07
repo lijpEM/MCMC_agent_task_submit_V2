@@ -1,0 +1,34 @@
+Baseline 运行结果说明
+
+本提交包包含 starter baseline 的运行和评分日志：
+
+- docs/baseline/starter_baseline_run_20260605.log
+- docs/baseline/starter_baseline_eval_20260605.txt
+
+starter baseline 命令生成了 `/tmp/mcmc_baseline_outputs`，方法为 `starter_map_plus_gaussian_approximation`。该 baseline 主要用于验证数据读取、输出格式、一维 MT 正演和低维剖面 scaffold 能跑通，不是完整贝叶斯解法。
+
+baseline run 摘要：
+
+- method = starter_map_plus_gaussian_approximation
+- mode_used = TM
+- n_stations = 20
+- n_freqs = 12
+- n_parameters = 7
+- n_samples = 300
+- acceptance_rate = 0.0
+- chi2_per_dof = 707.2773337985107
+- rmse_log10_rhoa = 1.5861489791176169
+- rmse_phase_deg = 22.444214764627706
+- runtime_seconds = 0.7842705249786377
+- optimizer_success = false
+
+baseline scorer result：
+
+- valid = true
+- score = 11.9
+- raw = 35.0
+- structural_penalty = 0.34
+- components: A=8.0, B=12.0, C=6.0, D=3.0, E=3.0, F=3.0
+- failures = hidden_cases_not_run_or_failed, map_only_or_least_squares, no_hidden_generalization, public_fit_not_noise_level, report_missing_quantitative_results, report_too_short_for_research_task
+
+解释：baseline 能证明全流程可运行、评分器能返回连续分数，并且低质量 starter 不会获得高分。它仍然有非零分，是因为 artifact/格式、部分 forward scaffold 和基本公开数据处理可被认可；但其 MAP/高斯近似、hidden 不可泛化、公开拟合差和报告不足会被显著扣分。

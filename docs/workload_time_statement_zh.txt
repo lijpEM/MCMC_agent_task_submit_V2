@@ -1,0 +1,15 @@
+工作量与时间说明
+
+本任务面向真人专家的有效工作量估计超过 20 小时。这里的有效工作时间指研究者持续进行建模、实现、调试、评估和解释的时间，不包括等待下载、排队或长时间无交互运行。
+
+估计分解如下：
+
+1. 数据和任务理解：2-3 小时。阅读任务说明、数据字段、站点水深、频率、TE/TM log10 apparent resistivity、phase、误差数组和 mask，确认公开数据与 SERPENT 参考资料的关系。
+2. MT 正演和单位处理：3-4 小时。检查一维层状介质 MT 阻抗计算、视电阻率 log10 单位、phase 单位、海水层构造、水深和层厚边界条件。
+3. 拟二维参数化设计：3-4 小时。选择 LAB 深度、低阻层厚度、电阻率和横向平滑的低维参数化，决定控制点、样条、基函数或 GP/PCA 表达，并避免站点独立反演后拼接。
+4. 贝叶斯模型实现：4-6 小时。定义 prior、likelihood、posterior，处理观测误差归一化，选择 MCMC/adaptive MCMC/SMC/VI/Laplace hybrid 方案，调节采样步数、proposal、粒子数或变分参数。
+5. 输出格式和可重跑接口：2-3 小时。生成 `posterior_samples.npy`、`model_posterior_profile.npz`、`data_pred_mean.npz`、`summary.json`、`report.md`，并让 `run_inversion.py` 支持 hidden rerun 输入输出路径。
+6. 诊断和评分迭代：4-6 小时。检查 chi2、RMSE、ESS、Rhat、acceptance、credible interval coverage、hidden 泛化、posthoc correction 风险和样本顺序可信度。
+7. 科学报告和结果解释：2-3 小时。总结 LAB/导体剖面、拟合质量、不确定性、非唯一性和失败模式。
+
+合计约 20-29 小时。对于当前 agent，30min 和 2h run 只能形成低分但有效的可运行流程，2h 最高正式分数为 12.0，说明任务仍有充足改进空间，能够支撑 12h+ 的持续优化。

@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="620" viewBox="0 0 1120 620">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#111827} .small{font-size:13px;fill:#374151} .axis{stroke:#111827;stroke-width:1.4} .grid{stroke:#e5e7eb;stroke-width:1} .tick{stroke:#9ca3af;stroke-width:1} .legend{font-size:15px;font-weight:600}</style>
+<text x="86" y="32" font-size="22" font-weight="700">pseudo2d_mt_lab_inversion score trajectory: 30min vs 2h</text>
+<text x="86" y="52" class="small">X axis is elapsed minutes from the first scored report within each run. Scores are service-side report scores.</text>
+<line x1="86" y1="534.0" x2="1088" y2="534.0" class="grid"/>
+<text x="74" y="538.0" text-anchor="end" class="small">0</text>
+<line x1="86" y1="375.3" x2="1088" y2="375.3" class="grid"/>
+<text x="74" y="379.3" text-anchor="end" class="small">5</text>
+<line x1="86" y1="216.7" x2="1088" y2="216.7" class="grid"/>
+<text x="74" y="220.7" text-anchor="end" class="small">10</text>
+<line x1="86" y1="58.0" x2="1088" y2="58.0" class="grid"/>
+<text x="74" y="62.0" text-anchor="end" class="small">15</text>
+<line x1="86.0" y1="58" x2="86.0" y2="534" class="grid"/>
+<text x="86.0" y="558" text-anchor="middle" class="small">0</text>
+<line x1="211.2" y1="58" x2="211.2" y2="534" class="grid"/>
+<text x="211.2" y="558" text-anchor="middle" class="small">15</text>
+<line x1="336.5" y1="58" x2="336.5" y2="534" class="grid"/>
+<text x="336.5" y="558" text-anchor="middle" class="small">30</text>
+<line x1="461.8" y1="58" x2="461.8" y2="534" class="grid"/>
+<text x="461.8" y="558" text-anchor="middle" class="small">45</text>
+<line x1="587.0" y1="58" x2="587.0" y2="534" class="grid"/>
+<text x="587.0" y="558" text-anchor="middle" class="small">60</text>
+<line x1="712.2" y1="58" x2="712.2" y2="534" class="grid"/>
+<text x="712.2" y="558" text-anchor="middle" class="small">75</text>
+<line x1="837.5" y1="58" x2="837.5" y2="534" class="grid"/>
+<text x="837.5" y="558" text-anchor="middle" class="small">90</text>
+<line x1="962.8" y1="58" x2="962.8" y2="534" class="grid"/>
+<text x="962.8" y="558" text-anchor="middle" class="small">105</text>
+<line x1="1088.0" y1="58" x2="1088.0" y2="534" class="grid"/>
+<text x="1088.0" y="558" text-anchor="middle" class="small">120</text>
+<line x1="86" y1="534" x2="1088" y2="534" class="axis"/>
+<line x1="86" y1="58" x2="86" y2="534" class="axis"/>
+<text x="587.0" y="596" text-anchor="middle" class="small">Elapsed minutes from first report</text>
+<text x="22" y="296.0" transform="rotate(-90 22 296.0)" text-anchor="middle" class="small">Score</text>
+<line x1="790" y1="32" x2="828" y2="32" stroke="#2563eb" stroke-width="3"/>
+<circle cx="809" cy="32" r="4" fill="#2563eb"/>
+<text x="838" y="37" class="legend">30min: final best 10.625, agent submissions 1</text>
+<line x1="790" y1="56" x2="828" y2="56" stroke="#dc2626" stroke-width="3"/>
+<circle cx="809" cy="56" r="4" fill="#dc2626"/>
+<text x="838" y="61" class="legend">2h: final best 12.0, agent submissions 9</text>
+<polyline points="86.0,534.0 127.8,534.0 191.6,196.8 194.6,196.8 250.1,208.7 293.7,166.7 338.4,198.4" fill="none" stroke="#2563eb" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="86.0" cy="534.0" r="3.9" fill="#2563eb" stroke="#ffffff" stroke-width="0.8"><title>30min auto-1: score=0.0, pass_rate=0.0, valid=False, elapsed=0 min</title></circle>
+<circle cx="127.8" cy="534.0" r="3.9" fill="#2563eb" stroke="#ffffff" stroke-width="0.8"><title>30min auto-2: score=0.0, pass_rate=0.0, valid=False, elapsed=5 min</title></circle>
+<circle cx="191.6" cy="196.8" r="3.9" fill="#2563eb" stroke="#ffffff" stroke-width="0.8"><title>30min auto-3: score=10.625, pass_rate=0.3333333333333333, valid=True, elapsed=12.65 min</title></circle>
+<circle cx="194.6" cy="196.8" r="5.2" fill="#2563eb" stroke="#111827" stroke-width="1.3"><title>30min agent-1: score=10.625, pass_rate=0.3333333333333333, valid=True, elapsed=13.01 min</title></circle>
+<circle cx="250.1" cy="208.7" r="3.9" fill="#2563eb" stroke="#ffffff" stroke-width="0.8"><title>30min auto-4: score=10.25, pass_rate=0.3333333333333333, valid=True, elapsed=19.65 min</title></circle>
+<circle cx="293.7" cy="166.7" r="3.9" fill="#2563eb" stroke="#ffffff" stroke-width="0.8"><title>30min auto-5: score=11.575, pass_rate=0.5, valid=True, elapsed=24.88 min</title></circle>
+<circle cx="338.4" cy="198.4" r="3.9" fill="#2563eb" stroke="#ffffff" stroke-width="0.8"><title>30min auto-6: score=10.575, pass_rate=0.5, valid=True, elapsed=30.23 min</title></circle>
+<polyline points="86.0,153.2 122.9,181.0 138.0,181.0 176.0,181.0 220.5,153.2 261.3,153.2 306.1,177.0 331.8,153.2 345.0,153.2 393.1,153.2 425.2,153.2 432.8,153.2 479.8,153.2 511.2,153.2 516.4,153.2 574.6,161.1 616.9,161.1 658.7,161.1 698.1,153.2 699.8,161.1 718.6,153.2 760.9,153.2 798.7,153.2 805.2,153.2 846.9,153.2 860.2,169.1 888.7,169.1 914.9,153.2 930.4,153.2 970.2,153.2 972.2,153.2 1014.0,153.2 1055.7,153.2" fill="none" stroke="#dc2626" stroke-width="2.7" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="86.0" cy="153.2" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-1: score=12.0, pass_rate=0.6666666666666666, valid=True, elapsed=0 min</title></circle>
+<circle cx="122.9" cy="181.0" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-2: score=11.125, pass_rate=0.5, valid=True, elapsed=4.42 min</title></circle>
+<circle cx="138.0" cy="181.0" r="5.2" fill="#dc2626" stroke="#111827" stroke-width="1.3"><title>2h agent-1: score=11.125, pass_rate=0.5, valid=True, elapsed=6.22 min</title></circle>
+<circle cx="176.0" cy="181.0" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-3: score=11.125, pass_rate=0.5, valid=True, elapsed=10.78 min</title></circle>
+<circle cx="220.5" cy="153.2" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-4: score=12.0, pass_rate=0.5, valid=True, elapsed=16.11 min</title></circle>
+<circle cx="261.3" cy="153.2" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-5: score=12.0, pass_rate=0.5, valid=True, elapsed=21 min</title></circle>
+<circle cx="306.1" cy="177.0" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-6: score=11.25, pass_rate=0.5, valid=True, elapsed=26.36 min</title></circle>
+<circle cx="331.8" cy="153.2" r="5.2" fill="#dc2626" stroke="#111827" stroke-width="1.3"><title>2h agent-2: score=12.0, pass_rate=0.5, valid=True, elapsed=29.44 min</title></circle>
+<circle cx="345.0" cy="153.2" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-7: score=12.0, pass_rate=0.5, valid=True, elapsed=31.02 min</title></circle>
+<circle cx="393.1" cy="153.2" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-8: score=12.0, pass_rate=0.5, valid=True, elapsed=36.77 min</title></circle>
+<circle cx="425.2" cy="153.2" r="5.2" fill="#dc2626" stroke="#111827" stroke-width="1.3"><title>2h agent-3: score=12.0, pass_rate=0.5, valid=True, elapsed=40.62 min</title></circle>
+<circle cx="432.8" cy="153.2" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-9: score=12.0, pass_rate=0.5, valid=True, elapsed=41.53 min</title></circle>
+<circle cx="479.8" cy="153.2" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-10: score=12.0, pass_rate=0.5, valid=True, elapsed=47.16 min</title></circle>
+<circle cx="511.2" cy="153.2" r="5.2" fill="#dc2626" stroke="#111827" stroke-width="1.3"><title>2h agent-4: score=12.0, pass_rate=0.5, valid=True, elapsed=50.92 min</title></circle>
+<circle cx="516.4" cy="153.2" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-11: score=12.0, pass_rate=0.5, valid=True, elapsed=51.55 min</title></circle>
+<circle cx="574.6" cy="161.1" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-12: score=11.75, pass_rate=0.5, valid=True, elapsed=58.51 min</title></circle>
+<circle cx="616.9" cy="161.1" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-13: score=11.75, pass_rate=0.5, valid=True, elapsed=63.58 min</title></circle>
+<circle cx="658.7" cy="161.1" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-14: score=11.75, pass_rate=0.5, valid=True, elapsed=68.59 min</title></circle>
+<circle cx="698.1" cy="153.2" r="5.2" fill="#dc2626" stroke="#111827" stroke-width="1.3"><title>2h agent-5: score=12.0, pass_rate=0.5, valid=True, elapsed=73.3 min</title></circle>
+<circle cx="699.8" cy="161.1" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-15: score=11.75, pass_rate=0.5, valid=True, elapsed=73.51 min</title></circle>
+<circle cx="718.6" cy="153.2" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-16: score=12.0, pass_rate=0.5, valid=True, elapsed=75.76 min</title></circle>
+<circle cx="760.9" cy="153.2" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-17: score=12.0, pass_rate=0.5, valid=True, elapsed=80.83 min</title></circle>
+<circle cx="798.7" cy="153.2" r="5.2" fill="#dc2626" stroke="#111827" stroke-width="1.3"><title>2h agent-6: score=12.0, pass_rate=0.5, valid=True, elapsed=85.36 min</title></circle>
+<circle cx="805.2" cy="153.2" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-18: score=12.0, pass_rate=0.5, valid=True, elapsed=86.13 min</title></circle>
+<circle cx="846.9" cy="153.2" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-19: score=12.0, pass_rate=0.5, valid=True, elapsed=91.13 min</title></circle>
+<circle cx="860.2" cy="169.1" r="5.2" fill="#dc2626" stroke="#111827" stroke-width="1.3"><title>2h agent-7: score=11.5, pass_rate=0.5, valid=True, elapsed=92.71 min</title></circle>
+<circle cx="888.7" cy="169.1" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-20: score=11.5, pass_rate=0.5, valid=True, elapsed=96.13 min</title></circle>
+<circle cx="914.9" cy="153.2" r="5.2" fill="#dc2626" stroke="#111827" stroke-width="1.3"><title>2h agent-8: score=12.0, pass_rate=0.5, valid=True, elapsed=99.27 min</title></circle>
+<circle cx="930.4" cy="153.2" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-21: score=12.0, pass_rate=0.5, valid=True, elapsed=101.13 min</title></circle>
+<circle cx="970.2" cy="153.2" r="5.2" fill="#dc2626" stroke="#111827" stroke-width="1.3"><title>2h agent-9: score=12.0, pass_rate=0.5, valid=True, elapsed=105.89 min</title></circle>
+<circle cx="972.2" cy="153.2" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-22: score=12.0, pass_rate=0.5, valid=True, elapsed=106.13 min</title></circle>
+<circle cx="1014.0" cy="153.2" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-23: score=12.0, pass_rate=0.5, valid=True, elapsed=111.14 min</title></circle>
+<circle cx="1055.7" cy="153.2" r="3.9" fill="#dc2626" stroke="#ffffff" stroke-width="0.8"><title>2h auto-24: score=12.0, pass_rate=0.5, valid=True, elapsed=116.13 min</title></circle>
+<text x="86" y="565" class="small">Larger black-outlined points are agent self-submissions; smaller points are auto-eval snapshots.</text>
+</svg>

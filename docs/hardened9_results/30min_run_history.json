@@ -1,0 +1,94 @@
+{
+  "run_id": "mcmc-30min-p1-2-hardened9-gpt-codex-8080-20260606-233200",
+  "best_score": 10.625,
+  "best_pass_rate": 0.3333333333333333,
+  "best_round": "auto-3",
+  "agent_submissions": 1,
+  "auto_submissions": 6,
+  "entries": [
+    {
+      "type": "submission",
+      "status": "completed",
+      "submission_id": "3ea8c6f6aed7",
+      "task_id": "pseudo2d_mt_lab_inversion",
+      "round": "auto-1",
+      "pass_rate": 0.0,
+      "score": 0.0,
+      "passed": 0,
+      "failed": 6,
+      "total_tests": 6,
+      "valid": false,
+      "summary": "final=0.00/100 | raw=0.00 | penalty=0.34 | A=0.0 B=0.0 C=0.0 D=0.0 E=0.0 F=0.0 | failures=apparent_resistivity_log10_handling_missing,fatal_missing_required_outputs,hidden_cases_not_run_or_failed,no_hidden_generalization,no_real_1d_mt_forward_evidence,posterior_samples_missing_or_invalid"
+    },
+    {
+      "type": "submission",
+      "status": "completed",
+      "submission_id": "cd82359dfeb1",
+      "task_id": "pseudo2d_mt_lab_inversion",
+      "round": "auto-2",
+      "pass_rate": 0.0,
+      "score": 0.0,
+      "passed": 0,
+      "failed": 6,
+      "total_tests": 6,
+      "valid": false,
+      "summary": "final=0.00/100 | raw=0.00 | penalty=0.34 | A=0.0 B=0.0 C=0.0 D=0.0 E=0.0 F=0.0 | failures=apparent_resistivity_log10_handling_missing,fatal_missing_required_outputs,hidden_cases_not_run_or_failed,no_hidden_generalization,no_real_1d_mt_forward_evidence,posterior_samples_missing_or_invalid"
+    },
+    {
+      "type": "submission",
+      "status": "completed",
+      "submission_id": "27c8f761beea",
+      "task_id": "pseudo2d_mt_lab_inversion",
+      "round": "auto-3",
+      "pass_rate": 0.3333333333333333,
+      "score": 10.625,
+      "passed": 2,
+      "failed": 4,
+      "total_tests": 6,
+      "valid": true,
+      "summary": "final=10.62/100 | raw=42.50 | penalty=0.25 | A=8.0 B=12.0 C=10.0 D=7.0 E=2.5 F=3.0 | failures=fast_pipeline_no_sampling,map_laplace_only,posterior_undercoverage_hidden,public_fit_and_hidden_quality_failed,public_fit_not_noise_level,report_too_short_for_research_task"
+    },
+    {
+      "type": "submission",
+      "status": "completed",
+      "submission_id": "ab7a615c7be3",
+      "task_id": "pseudo2d_mt_lab_inversion",
+      "round": "agent-1",
+      "pass_rate": 0.3333333333333333,
+      "score": 10.625,
+      "passed": 2,
+      "failed": 4,
+      "total_tests": 6,
+      "valid": true,
+      "summary": "final=10.62/100 | raw=42.50 | penalty=0.25 | A=8.0 B=12.0 C=10.0 D=7.0 E=2.5 F=3.0 | failures=fast_pipeline_no_sampling,map_laplace_only,posterior_undercoverage_hidden,public_fit_and_hidden_quality_failed,public_fit_not_noise_level,report_too_short_for_research_task"
+    },
+    {
+      "type": "submission",
+      "status": "completed",
+      "submission_id": "0a1b2125843a",
+      "task_id": "pseudo2d_mt_lab_inversion",
+      "round": "auto-4",
+      "pass_rate": 0.3333333333333333,
+      "score": 10.25,
+      "passed": 2,
+      "failed": 4,
+      "total_tests": 6,
+      "valid": true,
+      "summary": "final=10.25/100 | raw=41.00 | penalty=0.25 | A=8.0 B=12.0 C=10.0 D=6.0 E=2.0 F=3.0 | failures=fast_pipeline_no_sampling,hidden_inference_chain_mismatch,hidden_laplace_vi_not_same_sampler,map_laplace_only,posterior_undercoverage_hidden,public_fit_and_hidden_quality_failed"
+    },
+    {
+      "type": "submission",
+      "status": "running",
+      "submission_id": "11fa693d569d",
+      "task_id": "pseudo2d_mt_lab_inversion",
+      "round": "auto-5"
+    },
+    {
+      "type": "submission",
+      "status": "running",
+      "submission_id": "0f75ebb98026",
+      "task_id": "pseudo2d_mt_lab_inversion",
+      "round": "auto-6"
+    }
+  ]
+}
