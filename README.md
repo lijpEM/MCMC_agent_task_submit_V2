@@ -1,4 +1,4 @@
-# 伪二维海洋 MT 贝叶斯 LAB 反演任务
+# 拟二维海洋 MT 贝叶斯 LAB 反演
 
 本目录是 SE-Bench 任务 `pseudo2d_mt_lab_inversion` 的 hardened9 最终可提交题包。包内包含任务说明、agent 起始环境、公开数据、starter 代码、评分器、judge 评分器副本、校准说明和 30min/2h GPT-Codex 实跑证据。
 
